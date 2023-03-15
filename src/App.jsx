@@ -1,36 +1,39 @@
 import { v4 as uuid } from 'uuid';
+
+// Hooks
 import React, { useState } from 'react';
 
+// Styled Components
 import { Container, ToDoList, Input, Button, ListItem, Trash, Check } from './styles.js'
 
 
 function App() {
 
-  const [list, setList] = useState('')
-  const [inputTask, setInputTask] = useState("")
+  const [list, setList] = useState('') // Guarda a lista completa
+  const [inputTask, setInputTask] = useState("") // Guarda o que está dentro do input
 
-
+// Função para pegar o oque o usuário digitar
   function changedInput(event) {
     setInputTask(event.target.value)
 
   }
-
+// Pega a informação do inputTask e cria uma nova posição dentro do array
   function buttonClicked() {
-    if (inputTask) {
+    if (inputTask) { // Se o inputTask estiver vazio ele não deixa acionar uma nova tarefa
       setList([...list, { id: uuid(), task: inputTask, finished: false }])
     }
 
   }
-
+// Função para deixar selecionado a tarefa feita, verifica se o id da tarefa é igual ao id clicado
   function finishedTask(id) {
 
     const newList = list.map(item => (
       item.id === id ? { ...item, finished: !item.finished } : item
     ))
 
-    setList(newList)
+    setList(newList) 
   }
-
+// Função para deletar a tarefa já realizada
   function deleteItem(id) {
     const newList = list.filter(item => item.id !== id)
 
@@ -49,7 +52,7 @@ function App() {
             list.length > 0 ? (
 
               list.map(item => (
-                <ListItem isFinished={item.finished} key={item.id}>
+                <ListItem isFinished={item.finished} key={item.id}> 
                   <Check onClick={() => finishedTask(item.id)} />
                   <li>{item.task}</li>
                   <Trash onClick={() => deleteItem(item.id)} />
